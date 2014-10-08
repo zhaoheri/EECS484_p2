@@ -183,6 +183,9 @@ public class MyFakebookOracle extends FakebookOracle {
 				this.mostCommonLastNamesCount += rst.getInt(1);
 			}
 		}
+		
+		stmt.close();
+		rst.close();
 	}
 	
 	@Override
@@ -214,6 +217,8 @@ public class MyFakebookOracle extends FakebookOracle {
 			this.lonelyFriends.add(new UserInfo(uid, firstName, lastName));
 			this.countLonelyFriends++;
 		}
+		stmt.close();
+		rst.close();
 	}
 	 
 
@@ -239,6 +244,8 @@ public class MyFakebookOracle extends FakebookOracle {
 			this.liveAtHome.add(new UserInfo(uid, firstName, lastName));
 			this.countLiveAtHome++;
 		}
+		stmt.close();
+		rst.close();
 	}
 
 
@@ -294,6 +301,9 @@ public class MyFakebookOracle extends FakebookOracle {
 			}
 			this.photosWithMostTags.add(tp);
 		}
+		
+		stmt.close();
+		rst.close();
 	}
 
 	
@@ -542,6 +552,9 @@ public class MyFakebookOracle extends FakebookOracle {
 		String lastName_youngest = rst_youngest.getString(3);
 		this.youngestFriend = new UserInfo(uid_youngest, firstName_youngest, lastName_youngest);
 		
+		stmt_youngest.close();
+		rst_youngest.close();
+		
 		//Oldest
 		Statement stmt_oldest = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 		        ResultSet.CONCUR_READ_ONLY);
@@ -560,6 +573,9 @@ public class MyFakebookOracle extends FakebookOracle {
 		String firstName_oldest = rst_oldest.getString(2);
 		String lastName_oldest = rst_oldest.getString(3);
 		this.oldestFriend = new UserInfo(uid_oldest, firstName_oldest, lastName_oldest);
+		
+		stmt_oldest.close();
+		rst_oldest.close();
 	}
 	
 	
@@ -594,6 +610,9 @@ public class MyFakebookOracle extends FakebookOracle {
 			}
 			else break;
 		}
+		
+		stmt.close();
+		rst.close();
 	}
 	
 	
@@ -638,6 +657,9 @@ public class MyFakebookOracle extends FakebookOracle {
 			SiblingInfo s = new SiblingInfo(user1_id, user1FirstName, user1LastName, user2_id, user2FirstName, user2LastName);
 			this.siblings.add(s);
 		}
+		
+		stmt.close();
+		rst.close();
 	}
 	
 }
