@@ -53,7 +53,6 @@ Youngest friend: Meriadoc SMITH(734)
 >>>>>>>>>Query8>>>>>>>>>>
 City/Cities with most events: [Minas Tirith]
 Total events in each city: 7
-select S1.user_id, S1.first_name, S1.last_name, S2.user_id, S2.first_name, S2.last_name from yjtang.PUBLIC_USERS S1, yjtang.PUBLIC_USERS S2,  yjtang.PUBLIC_USER_HOMETOWN_CITY H1, yjtang.PUBLIC_USER_HOMETOWN_CITY H2 where S1.last_name = S2.last_name and S1.user_id = H1.user_id and S2.user_id = H2.user_id and H1.hometown_city_id = H2.hometown_city_id and S1.user_id < S2.user_id and (S1.user_id, S2.user_id) in (select user1_id, user2_id from yjtang.public_friends) and ABS(S1.year_of_birth - S2.year_of_birth) < 10 order by S1.user_id, S2.user_id
 >>>>>>>>>Query9>>>>>>>>>>
 1 pairs of siblings
 Raelag MOORE(142) and Ashley MOORE(502)
