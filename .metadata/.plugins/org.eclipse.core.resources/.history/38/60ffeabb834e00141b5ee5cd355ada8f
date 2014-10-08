@@ -465,12 +465,12 @@ public class MyFakebookOracle extends FakebookOracle {
 			Long user2_id = rst_getPair.getLong(2);
 			Statement stmt_getUser = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 			        ResultSet.CONCUR_READ_ONLY);
-			ResultSet rst_user = stmt_getUser.executeQuery("select first_name, last_name from " + userTableName + 
+			ResultSet rst_user = stmt_getUser.executeQuery("select first_name, last_name " + userTableName + 
 													" where user_id = " + user1_id);
 			rst_user.next();
 			String user1FirstName = rst_user.getString(1);
 			String user1LastName = rst_user.getString(2);
-			rst_user = stmt_getUser.executeQuery("select first_name, last_name from " + userTableName + 
+			rst_user = stmt_getUser.executeQuery("select first_name, last_name " + userTableName + 
 					" where user_id = " + user2_id);
 			rst_user.next();
 			String user2FirstName = rst_user.getString(1);
@@ -487,27 +487,23 @@ public class MyFakebookOracle extends FakebookOracle {
 			ResultSet rst_sharedFriend = stmt_getSharedFriend.executeQuery(sql_getSharedFriendString);
 			while(rst_sharedFriend.next()){
 				Long sharedFriendID = rst_sharedFriend.getLong(1);
-				rst_user = stmt_getUser.executeQuery("select first_name, last_name from " + userTableName + 
+				rst_user = stmt_getUser.executeQuery("select first_name, last_name " + userTableName + 
 													" where user_id = " + sharedFriendID);
 				rst_user.next();
 				String sharedFriendFirstName = rst_user.getString(1);
 				String sharedFriendLastName = rst_user.getString(2);
 				p.addSharedFriend(sharedFriendID, sharedFriendFirstName, sharedFriendLastName);
 			}
-			this.suggestedFriendsPairs.add(p);
-			
 			stmt_getUser.close();
 			stmt_getSharedFriend.close();
-			rst_user.close();
-			rst_sharedFriend.close();
+			
 		}
 		
 		//Drop view
 		String sql_drop_view = "drop view sharedFriendPairs";
 		stmt.executeQuery(sql_drop_view);
 		
-		stmt.close();
-		rst_getPair.close();
+		
 	}
 	
 	

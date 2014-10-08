@@ -52,34 +52,78 @@
 -- and F.user_id = T2.tag_subject_id
 -- and T1.tag_photo_id = T2.tag_photo_id;
 
-create view satisifiedPairs as
-select T1.tag_photo_id as Pid, M.user_id as Mid, F.user_id as Fid
-from yjtang.public_users M, yjtang.public_users F, yjtang.public_tags T1, yjtang.public_tags T2
-where (M.user_id, F.user_id) not in (select user1_id, user2_id from yjtang.public_friends)
-and (F.user_id, M.user_id) not in (select user1_id, user2_id from yjtang.public_friends)
-and M.user_id != F.user_id
-and M.gender = 'male'
-and F.gender = 'female'
-and ABS(M.year_of_birth - F.year_of_birth) <= 2
-and M.user_id = T1.tag_subject_id
-and F.user_id = T2.tag_subject_id
-and T1.tag_photo_id = T2.tag_photo_id;
+-- create view satisifiedPairs as
+-- select T1.tag_photo_id as Pid, M.user_id as Mid, F.user_id as Fid
+-- from yjtang.public_users M, yjtang.public_users F, yjtang.public_tags T1, yjtang.public_tags T2
+-- where (M.user_id, F.user_id) not in (select user1_id, user2_id from yjtang.public_friends)
+-- and (F.user_id, M.user_id) not in (select user1_id, user2_id from yjtang.public_friends)
+-- and M.user_id != F.user_id
+-- and M.gender = 'male'
+-- and F.gender = 'female'
+-- and ABS(M.year_of_birth - F.year_of_birth) <= 2
+-- and M.user_id = T1.tag_subject_id
+-- and F.user_id = T2.tag_subject_id
+-- and T1.tag_photo_id = T2.tag_photo_id;
 
-select count(*) as sharedPhotoNum, Mid, Fid
-from satisifiedPairs
-group by (Mid, Fid)
-order by sharedPhotoNum desc, Fid, Mid;
+-- select count(*) as sharedPhotoNum, Mid, Fid
+-- from satisifiedPairs
+-- group by (Mid, Fid)
+-- order by sharedPhotoNum desc, Fid, Mid;
 
-select S.Pid, P.album_id, A.album_name, P.photo_caption, P.photo_link
-from satisifiedPairs S, yjtang.public_photos P, yjtang.public_albums A
-where S.Mid = 65 and S.Fid = 708
-and P.photo_id = S.Pid
-and A.album_id = P.album_id;
+-- select S.Pid, P.album_id, A.album_name, P.photo_caption, P.photo_link
+-- from satisifiedPairs S, yjtang.public_photos P, yjtang.public_albums A
+-- where S.Mid = 65 and S.Fid = 708
+-- and P.photo_id = S.Pid
+-- and A.album_id = P.album_id;
 
-drop view satisifiedPairs;
+-- drop view satisifiedPairs;
 
 
 -- Query 6
+create view sharedFriendPairs as
+select U1.user_id as user1, U2.user_id as user2, F1.user2_id as sharedFriend
+from yjtang.public_users U1, yjtang.public_users U2, 
+yjtang.public_friends F1, yjtang.public_friends F2
+where U1.user_id < U2.user_id
+and (U1.user_id, U2.user_id) not in (select user1_id, user2_id from yjtang.public_friends)
+and (U1.user_id = F1.user1_id and U2.user_id = F2.user1_id and F1.user2_id = F2.user2_id)
+UNION
+select U1.user_id as user1, U2.user_id as user2, F1.user2_id as sharedFriend
+from yjtang.public_users U1, yjtang.public_users U2, 
+yjtang.public_friends F1, yjtang.public_friends F2
+where U1.user_id < U2.user_id
+and (U1.user_id, U2.user_id) not in (select user1_id, user2_id from yjtang.public_friends)
+and (U1.user_id = F1.user1_id and U2.user_id = F2.user2_id and F1.user2_id = F2.user1_id)
+UNION
+select U1.user_id as user1, U2.user_id as user2, F1.user1_id as sharedFriend
+from yjtang.public_users U1, yjtang.public_users U2, 
+yjtang.public_friends F1, yjtang.public_friends F2
+where U1.user_id < U2.user_id
+and (U1.user_id, U2.user_id) not in (select user1_id, user2_id from yjtang.public_friends)
+and (U1.user_id = F1.user2_id and U2.user_id = F2.user2_id and F1.user1_id = F2.user1_id)
+UNION
+select U1.user_id as user1, U2.user_id as user2, F1.user2_id as sharedFriend
+from yjtang.public_users U1, yjtang.public_users U2, 
+yjtang.public_friends F1, yjtang.public_friends F2
+where U1.user_id < U2.user_id
+and (U1.user_id, U2.user_id) not in (select user1_id, user2_id from yjtang.public_friends)
+and (U1.user_id = F1.user1_id and U2.user_id = F2.user2_id and F1.user2_id = F2.user1_id);
+
+select * from(
+select count(*) sharedFriendNum, user1, user2
+from sharedFriendPairs
+group by (user1, user2)
+order by sharedFriendNum desc, user1 asc, user2 asc
+)
+where rownum < 5;
+
+select sharedFriend
+from sharedFriendPairs
+where user1 = 
+and user2 = 
+
+drop view sharedFriendPairs;
+
 
 -- Query 7
 -- select * from

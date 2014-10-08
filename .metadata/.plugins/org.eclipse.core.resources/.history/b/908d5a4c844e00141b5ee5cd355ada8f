@@ -494,8 +494,6 @@ public class MyFakebookOracle extends FakebookOracle {
 				String sharedFriendLastName = rst_user.getString(2);
 				p.addSharedFriend(sharedFriendID, sharedFriendFirstName, sharedFriendLastName);
 			}
-			this.suggestedFriendsPairs.add(p);
-			
 			stmt_getUser.close();
 			stmt_getSharedFriend.close();
 			rst_user.close();
