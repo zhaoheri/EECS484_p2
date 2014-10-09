@@ -126,8 +126,6 @@ public class MyFakebookOracle extends FakebookOracle {
 	// (3) The most common last name, and the number of times it appears (if there is a tie, include all in result)
 	//
 	public void findNameInfo() throws SQLException { // Query1
-        // Find the following information from your database and store the information as shown
-		
 		//Get the longest last name
 		Statement stmt = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 		        ResultSet.CONCUR_READ_ONLY);
@@ -418,19 +416,6 @@ public class MyFakebookOracle extends FakebookOracle {
 	//
 	@Override
 	public void suggestFriendsByMutualFriends(int n) throws SQLException {
-//		Long user1_id = 123L;
-//		String user1FirstName = "Friend1FirstName";
-//		String user1LastName = "Friend1LastName";
-//		Long user2_id = 456L;
-//		String user2FirstName = "Friend2FirstName";
-//		String user2LastName = "Friend2LastName";
-//		FriendsPair p = new FriendsPair(user1_id, user1FirstName, user1LastName, user2_id, user2FirstName, user2LastName);
-//
-//		p.addSharedFriend(567L, "sharedFriend1FirstName", "sharedFriend1LastName");
-//		p.addSharedFriend(678L, "sharedFriend2FirstName", "sharedFriend2LastName");
-//		p.addSharedFriend(789L, "sharedFriend3FirstName", "sharedFriend3LastName");
-//		this.suggestedFriendsPairs.add(p);
-		
 		//Create view
 		Statement stmt = oracleConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 		        ResultSet.CONCUR_READ_ONLY);
@@ -645,7 +630,6 @@ public class MyFakebookOracle extends FakebookOracle {
 								+ "and ABS(S1.year_of_birth - S2.year_of_birth) < 10 "
 								+ "order by S1.user_id, S2.user_id",
 								userTableName, userTableName, hometownCityTableName, hometownCityTableName);
-		System.out.println(sql);
 		ResultSet rst = stmt.executeQuery(sql);
 		while(rst.next()){
 			Long user1_id = rst.getLong(1);
